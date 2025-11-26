@@ -1,0 +1,53 @@
+version: '1'
+package:
+  id: io.github.zen-generic
+  name: Zen
+  version: 1.17.9.1126
+  kind: app
+  description: 'Experience tranquility while browsing the internet with Zen! Our mission
+    is to give you a perfect balance for speed, privacy and productivity
+
+    '
+base: org.deepin.base/25.2.1
+command:
+- /opt/apps/io.github.zen-generic/files/bin/io.github.zen-generic
+build: |
+  cd /project/linglong/sources
+  APPIMAGE=$(find . -regex '.*\.AppImage\|.*appimage' -exec basename {} \; | grep -E 'aarch64|arm64' | head -1)
+  if [ -z "$APPIMAGE" ]; then
+    APPIMAGE=$(find . -regex '.*\.AppImage\|.*appimage' -exec basename {} \; | head -1)
+  fi
+  chmod +x ${APPIMAGE}
+  ./${APPIMAGE} --appimage-extract
+  BINNAME=${LINGLONG_APPID}
+  APP_PREFIX=${BINNAME}
+  echo "#!/usr/bin/env bash" > ${BINNAME}
+  echo "unset LD_LIBRARY_PATH" >> ${BINNAME}
+  echo "cd ${PREFIX}/lib/${APP_PREFIX} && ./AppRun $@" >> ${BINNAME}
+  # only search for .desktop file in the squashfs-root directory
+  DESKTOP_FILE=$(find squashfs-root/ -maxdepth 1 -regex '.*\.desktop' -exec basename {} \;)
+  cp squashfs-root/${DESKTOP_FILE} .
+  sed -i "s@Exec=.*@Exec=${PREFIX}/bin/${BINNAME}@" ${DESKTOP_FILE}
+  cd squashfs-root
+  if [ ! $PREFIX ]; then
+    PREFIX=opt/${APP_PREFIX}
+  fi
+  DESTDIR=${dest_dir}
+  # install icons to linglong package
+  if [ -d usr/share/icons ]; then
+    cd usr
+    find share/icons -type f -exec install -D "{}" "${DESTDIR}/${PREFIX}/{}" \;
+    cd ..
+  fi
+  find -type d -exec install -d "${DESTDIR}/${PREFIX}/lib/${APP_PREFIX}/{}" \;
+  find -type f -exec install -D "{}" "${DESTDIR}/${PREFIX}/lib/${APP_PREFIX}/{}" \;
+  find -type l -exec bash -c "ln -s \$(readlink {}) "${DESTDIR}/${PREFIX}/lib/${APP_PREFIX}/{}" " -exec install -D "{}" "${DESTDIR}/${PREFIX}/lib/${APP_PREFIX}/{}" \;
+  cd ..
+  install -D ${BINNAME} ${DESTDIR}/${PREFIX}/bin/${BINNAME}
+  install -D ${DESKTOP_FILE} ${DESTDIR}/${PREFIX}/share/applications/${DESKTOP_FILE}
+  rm -rf squashfs-root
+sources:
+- kind: file
+  url: https://gh-proxy.org/https://github.com/zen-browser/desktop/releases/download/1.17.9b/zen-aarch64.AppImage
+  digest: 53131fba425744f8126183a9c5cf27029acfe2a9c42292ff2a89138e55e09fcf
+  name: Zen-arm64.AppImage
