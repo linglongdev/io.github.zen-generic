@@ -2,7 +2,7 @@ version: '1'
 package:
   id: io.github.zen-generic
   name: Zen
-  version: 1.19.8.0416
+  version: 1.19.8.0417
   kind: app
   description: 'Experience tranquility while browsing the internet with Zen! Our mission
     is to give you a perfect balance for speed, privacy and productivity
@@ -49,5 +49,5 @@ build: |
 sources:
 - kind: file
   url: https://gh-proxy.org/https://github.com/zen-browser/desktop/releases/download/1.19.8b/zen-aarch64.AppImage
-  digest: e01331b8c1834d1ffcc9eab087faea8fb3467aa588592458445e6352f7eaf35a
+  digest: 8fdfbbfe59b174d6241edc1708a05b61082a17e9adea52589c1ac002d58212a3
   name: Zen-arm64.AppImage
