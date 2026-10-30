@@ -2,7 +2,7 @@ version: '1'
 package:
   id: io.github.zen-generic
   name: Zen
-  version: 1.23.4.1029
+  version: 1.24.0.1030
   kind: app
   description: 'Experience tranquility while browsing the internet with Zen! Our mission
     is to give you a perfect balance for speed, privacy and productivity
@@ -48,6 +48,6 @@ build: |
   rm -rf squashfs-root
 sources:
 - kind: file
-  url: https://gh-proxy.org/https://github.com/zen-browser/desktop/releases/download/1.23.4b/zen-aarch64.AppImage
-  digest: 767920d2b2488b0c7725b9b03195b2821684659fa786ee2bdff33c9d55eb73ae
+  url: https://gh-proxy.org/https://github.com/zen-browser/desktop/releases/download/1.24b/zen-aarch64.AppImage
+  digest: ea90b76b0ba1d33fff30042df96578871cf300aa28be45a6d6d0d6436ef3cde9
   name: Zen-arm64.AppImage
